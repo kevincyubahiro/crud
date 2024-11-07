@@ -34,4 +34,29 @@ app.post('/items', (req, res) => {
         res.status(500).json({ error: err.message });
       });
   });
+  app.get('/items', (req, res) => {
+    Item.find()
+      .then(items => {
+        res.json(items);
+      })
+      .catch(err => {
+        res.status(500).json({ error: err.message });
+      });
+  });
+  
+  // Fetch a single item by ID
+  app.get('/items/:id', (req, res) => {
+    const { id } = req.params;
+  
+    Item.findById(id)
+      .then(item => {
+        if (!item) {
+          return res.status(404).json({ error: 'Item not found' });
+        }
+        res.json(item);
+      })
+      .catch(err => {
+        res.status(500).json({ error: err.message });
+      });
+  });
   
