@@ -59,4 +59,19 @@ app.post('/items', (req, res) => {
         res.status(500).json({ error: err.message });
       });
   });
+  app.put('/items/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, description, price } = req.body;
+  
+    Item.findByIdAndUpdate(id, { name, description, price }, { new: true })
+      .then(item => {
+        if (!item) {
+          return res.status(404).json({ error: 'Item not found' });
+        }
+        res.json(item);
+      })
+      .catch(err => {
+        res.status(500).json({ error: err.message });
+      });
+  });
   
